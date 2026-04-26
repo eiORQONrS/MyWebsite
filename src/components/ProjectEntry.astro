@@ -1,0 +1,70 @@
+---
+interface Props {
+  title: string;
+  venue?: string;
+  image: string;
+  award?: string;
+  projectUrl?: string;
+}
+
+const props = Astro.props;
+
+// Split title at first ": " so e.g. "Anmoji: Head and Shoulder..." → ["Anmoji:", "Head and Shoulder..."]
+const colonIdx = props.title.indexOf(': ');
+const titleLine1 = colonIdx !== -1 ? props.title.slice(0, colonIdx + 1) : props.title;
+const titleLine2 = colonIdx !== -1 ? props.title.slice(colonIdx + 2) : null;
+---
+
+<article
+  class="project-card"
+  data-url={props.projectUrl ?? ''}
+>
+  <div class="project-media">
+    <img src={props.image} alt={props.title} loading="lazy" />
+    <div class="project-overlay">
+      <p class="project-overlay-title">
+        {titleLine1}
+        {titleLine2 && <><br />{titleLine2}</>}
+      </p>
+      {props.venue && <p class="project-overlay-venue">{props.venue}</p>}
+      {props.award && <span class="project-award">{props.award}</span>}
+    </div>
+  </div>
+</article>
+
+<script>
+  // Run once across all project cards
+  if (!document.body.dataset.projectInit) {
+    document.body.dataset.projectInit = '1';
+
+    const isMouse = window.matchMedia('(pointer: fine)').matches;
+
+    document.querySelectorAll<HTMLElement>('.project-card').forEach(card => {
+      const url = card.dataset.url;
+
+      if (isMouse) {
+        // Desktop: hover shows overlay (CSS handles it), click navigates if URL set
+        if (url) {
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', () => window.open(url, '_blank', 'noopener'));
+        }
+      } else {
+        // Mobile / tablet: tap toggles overlay; no navigation on tap
+        card.addEventListener('click', (e) => {
+          e.preventDefault();
+          const isActive = card.classList.contains('is-active');
+          document.querySelectorAll('.project-card.is-active')
+            .forEach(c => c.classList.remove('is-active'));
+          if (!isActive) card.classList.add('is-active');
+        });
+        // Close when tapping outside
+        document.addEventListener('click', (e) => {
+          if (!(e.target as Element).closest('.project-card')) {
+            document.querySelectorAll('.project-card.is-active')
+              .forEach(c => c.classList.remove('is-active'));
+          }
+        });
+      }
+    });
+  }
+</script>

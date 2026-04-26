@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+import { site } from '../config';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = title ? `${title} — ${site.brand}` : site.title;
+const pageDescription = description ?? site.description;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="icon" type="image/png" href="/uploads/cropped-me.png" />
+    <link rel="canonical" href={site.url} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={site.url} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a href="/" class="brand">
+          {site.logoImage
+            ? <img src={site.logoImage} alt={site.brand} class="brand-logo" />
+            : site.brand}
+        </a>
+        <nav class="site-nav">
+          {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">{site.footer}</div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+# chen-yanjun.com
+
+Personal academic site, built with [Astro](https://astro.build/) and deployed on Cloudflare Pages.
+
+## Quick start
+
+```bash
+# Install dependencies (one-time)
+npm install
+
+# Run dev server at http://localhost:4321
+npm run dev
+
+# Build static site to ./dist
+npm run build
+
+# Preview the built site locally
+npm run preview
+```
+
+Requires Node.js 18.17+ or 20.3+ (recommended: 20 LTS).
+
+---
+
+## How content is organized
+
+Everything you might want to edit lives in plain files. **You should never need to touch component code to update content.**
+
+| What you want to change | File to edit |
+|--|--|
+| Bio, photo, name, CV link, nav, footer | `src/config.ts` |
+| Add / edit a publication | `src/content/publications/*.md` (one file per paper) |
+| Add / edit a fun project | `src/content/projects/*.md` |
+| Site colors, fonts, spacing | `src/styles/global.css` (CSS variables at the top) |
+
+### Adding a new publication
+
+Create a new file in `src/content/publications/`, e.g. `00-new-paper.md`:
+
+```markdown
+---
+title: "Paper Title Here"
+authors: "Author One, **Yanjun Chen**, Author Three"
+venue: "CHI 2026: ACM Conference on Human Factors in Computing Systems"
+year: 2026
+order: 0          # lower number = appears higher on the page
+paperUrl: "/uploads/your-paper.pdf"
+doiUrl: "https://doi.org/..."
+videoUrl: "https://www.youtube.com/watch?v=..."
+previewVideo: "/uploads/your-preview.mp4"
+---
+```
+
+- Wrap your own name in `**double asterisks**` to bold it in the author list.
+- `order: 0` puts it at the top. Existing papers go from `order: 1` (newest) downward.
+- Drop the PDF and preview video into `public/uploads/`.
+- Any of the URL fields can be omitted — buttons only show if a URL is set.
+
+### Adding a fun project
+
+Same idea, in `src/content/projects/`:
+
+```markdown
+---
+title: "Project Name"
+venue: "Some Conference 2025"
+year: 2025
+order: 0
+image: "/uploads/your-image.jpg"
+award: "🏆 Best Demo"   # optional
+---
+```
+
+---
+
+## Migrating content from the old WordPress site
+
+Your existing PDFs, videos, and images currently live at
+`https://chen-yanjun.com/wp-content/uploads/...` and `https://chen-yanjun.com/uploads/...`.
+
+1. Download everything from the old site's `/uploads/` and `/wp-content/uploads/` folders.
+2. Drop the files into this repo's `public/uploads/` folder.
+3. The Markdown files already reference them at `/uploads/<filename>` — no path changes needed.
+
+You also need a profile photo (`me.png`) and favicon (`favicon.png`) in `public/`.
+
+### Tip: shrink those preview videos
+
+The original site serves preview clips as full-size `.mp4`. Re-encode to ~720p and a few seconds long to keep page loads snappy:
+
+```bash
+# Example using ffmpeg
+ffmpeg -i original.mp4 -t 6 -vf scale=-2:720 -c:v libx264 -crf 28 -an preview.mp4
+```
+
+A 1–2 MB preview file is plenty.
+
+---
+
+## Deploying to Cloudflare Pages
+
+1. Push this repo to GitHub (or GitLab).
+2. Go to [Cloudflare Pages dashboard](https://dash.cloudflare.com/) → **Create a project** → connect to your repo.
+3. Use these build settings:
+   - **Framework preset**: Astro
+   - **Build command**: `npm run build`
+   - **Build output directory**: `dist`
+   - **Node version**: `20` (set under environment variables: `NODE_VERSION=20`)
+4. Click **Save and Deploy**. First build takes ~1 minute.
+5. In **Custom domains**, add `chen-yanjun.com` and `www.chen-yanjun.com`.
+   - Cloudflare will guide you through DNS setup. If your domain is already on Cloudflare, this is one click.
+
+After this, every `git push` to your main branch automatically rebuilds and deploys the site.
+
+---
+
+## Stack
+
+- **Astro 4** — static site generator. Outputs zero JS by default.
+- **No CSS framework** — plain CSS with custom properties. ~5 KB gzipped.
+- **No client-side JavaScript** — except inline `onmouseover` for video hover previews.
+- **Total build output** for a site this size: well under 100 KB of HTML/CSS (videos and PDFs excluded).
+
+## Why this is easier to maintain than WordPress
+
+- No database, no PHP, no plugin updates, no security patches.
+- Adding a paper = creating one Markdown file and `git push`.
+- Versioned in git — full history of every edit.
+- Free hosting on Cloudflare Pages with global CDN.
