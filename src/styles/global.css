@@ -502,52 +502,39 @@ p { margin: 0 0 1em; }
 }
 
 /* ==========================================================================
-   Page layout — main content + news sidebar
-   ========================================================================== */
-.page-layout {
-  display: flex;
-  align-items: flex-start;
-  gap: 2.5rem;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--gutter);
-}
-
-.page-main {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Containers inside page-main no longer need their own centering */
-.page-main .container {
-  padding-left: 0;
-  padding-right: 0;
-  max-width: none;
-  margin: 0;
-}
-
-/* ==========================================================================
-   News sidebar
+   News sidebar — fixed in the right white space outside the content column
    ========================================================================== */
 .news-sidebar {
-  width: 220px;
-  flex-shrink: 0;
-  position: sticky;
+  position: fixed;
   top: 5.5rem;
+  /* left edge = centre + half of content width + small gap */
+  left: calc(50% + var(--max-width) / 2 + 1.25rem);
+  /* right edge = 1.25rem from viewport edge */
+  right: 1.25rem;
   max-height: calc(100vh - 7rem);
   display: flex;
   flex-direction: column;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  /* hide when there isn't enough white space */
+  display: none;
+}
+
+/* Show only when viewport is wide enough that the panel fits */
+@media (min-width: 1380px) {
+  .news-sidebar { display: flex; }
 }
 
 .news-title {
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   color: var(--color-text-muted);
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.6rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid #e8e8e8;
   flex-shrink: 0;
 }
 
@@ -563,31 +550,25 @@ p { margin: 0 0 1em; }
 .news-list::-webkit-scrollbar { display: none; }
 
 .news-item {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0 0.6rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #f2f2f2;
 }
 .news-item:last-child { border-bottom: none; }
 
 .news-date {
-  display: block;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--color-text-muted);
-  margin-bottom: 0.2rem;
+  line-height: 1.5;
+  padding-top: 0.05rem;
 }
 
 .news-text {
-  font-size: 0.88rem;
-  line-height: 1.55;
+  font-size: 0.78rem;
+  line-height: 1.5;
   color: var(--color-text);
-  margin: 0;
-}
-
-@media (max-width: 900px) {
-  .news-sidebar { display: none; }
-  .page-layout {
-    display: block;
-    padding: 0 var(--gutter);
-  }
 }
 
 /* ==========================================================================

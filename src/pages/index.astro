@@ -17,50 +17,46 @@ const projects = (await getCollection('projects')).sort(
 ---
 
 <Base>
-  <div class="page-layout">
-    <div class="page-main">
-      <Hero />
+  <Hero />
 
-      <section id="publication" class="section">
-        <div class="container">
-          <h2 class="section-title">Publications</h2>
-          {
-            publications.map((p) => (
-              <PublicationEntry
-                title={p.data.title}
-                authors={p.data.authors}
-                venue={p.data.venue}
-                paperUrl={p.data.paperUrl}
-                doiUrl={p.data.doiUrl}
-                videoUrl={p.data.videoUrl}
-                previewVideo={p.data.previewVideo}
-                award={p.data.award}
-              />
-            ))
-          }
-        </div>
-      </section>
-
-      <section id="projects" class="section">
-        <div class="container">
-          <h2 class="section-title">Demonstrations</h2>
-          <div class="projects-grid">
-            {
-              projects.map((p) => (
-                <ProjectEntry
-                  title={p.data.title}
-                  venue={p.data.venue}
-                  image={p.data.image}
-                  award={p.data.award}
-                  projectUrl={p.data.projectUrl}
-                />
-              ))
-            }
-          </div>
-        </div>
-      </section>
+  <section id="publication" class="section">
+    <div class="container">
+      <h2 class="section-title">Publications</h2>
+      {
+        publications.map((p) => (
+          <PublicationEntry
+            title={p.data.title}
+            authors={p.data.authors}
+            venue={p.data.venue}
+            paperUrl={p.data.paperUrl}
+            doiUrl={p.data.doiUrl}
+            videoUrl={p.data.videoUrl}
+            previewVideo={p.data.previewVideo}
+            award={p.data.award}
+          />
+        ))
+      }
     </div>
+  </section>
 
-    <News />
-  </div>
+  <section id="projects" class="section">
+    <div class="container">
+      <h2 class="section-title">Demonstrations</h2>
+      <div class="projects-grid">
+        {
+          projects.map((p) => (
+            <ProjectEntry
+              title={p.data.title}
+              venue={p.data.venue}
+              image={p.data.image}
+              award={p.data.award}
+              projectUrl={p.data.projectUrl}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <News />
 </Base>
