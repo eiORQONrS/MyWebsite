@@ -502,6 +502,95 @@ p { margin: 0 0 1em; }
 }
 
 /* ==========================================================================
+   Page layout — main content + news sidebar
+   ========================================================================== */
+.page-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.page-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Containers inside page-main no longer need their own centering */
+.page-main .container {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  margin: 0;
+}
+
+/* ==========================================================================
+   News sidebar
+   ========================================================================== */
+.news-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 5.5rem;
+  max-height: calc(100vh - 7rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.news-title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.news-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+}
+.news-list::-webkit-scrollbar { display: none; }
+
+.news-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.news-item:last-child { border-bottom: none; }
+
+.news-date {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.news-text {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--color-text);
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .news-sidebar { display: none; }
+  .page-layout {
+    display: block;
+    padding: 0 var(--gutter);
+  }
+}
+
+/* ==========================================================================
    Footer
    ========================================================================== */
 .site-footer {
