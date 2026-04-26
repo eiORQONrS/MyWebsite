@@ -13,6 +13,8 @@ const props = Astro.props;
 const colonIdx = props.title.indexOf(': ');
 const titleLine1 = colonIdx !== -1 ? props.title.slice(0, colonIdx + 1) : props.title;
 const titleLine2 = colonIdx !== -1 ? props.title.slice(colonIdx + 2) : null;
+
+const isVideo = props.image.endsWith('.mp4');
 ---
 
 <article
@@ -20,7 +22,10 @@ const titleLine2 = colonIdx !== -1 ? props.title.slice(colonIdx + 2) : null;
   data-url={props.projectUrl ?? ''}
 >
   <div class="project-media">
-    <img src={props.image} alt={props.title} loading="lazy" />
+    {isVideo
+      ? <video src={props.image} autoplay muted loop playsinline />
+      : <img src={props.image} alt={props.title} loading="lazy" />
+    }
     <div class="project-overlay">
       <p class="project-overlay-title">
         {titleLine1}

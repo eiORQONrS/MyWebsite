@@ -6,6 +6,6 @@ year: 2026
 order: 0
 paperUrl: "/uploads/Sensitivity_at_the_Edges_of_the_Finger_Enables_Mixed_Reality_Force_Feedback.pdf"
 doiUrl: "https://ieeexplore.ieee.org/document/11475177/"
-previewVideo: "/uploads/Sensitivity_at_the_Edges_of_the_Finger_Enables_Mixed_Reality_Force_Feedback.mp4"
+previewVideo: "/uploads/SkinStretch.mp4"
 
 ---

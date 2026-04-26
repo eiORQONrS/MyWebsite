@@ -3,7 +3,7 @@ title: "Demonstrating Differential Dual-Side Fingertip Actuation for Virtual Rea
 venue: "IEEE Haptics Symposium 2026"
 year: 2026
 order: 0
-image: "/uploads/p-haptics2026.gif"
+image: "/uploads/p-haptics2026.mp4"
 award: "🏆 Distinguished Demonstration Award"
 projectUrl: "https://www.youtube.com/watch?v=B02Yt4sOTu8"
 ---
