@@ -161,6 +161,7 @@ p { margin: 0 0 1em; }
     width: 100%;
     justify-content: space-around;
   }
+  .section { scroll-margin-top: 56px; }
 }
 
 /* ==========================================================================
