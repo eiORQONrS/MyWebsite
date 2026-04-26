@@ -156,7 +156,11 @@ p { margin: 0 0 1em; }
 .site-nav a.active { color: #000000; }
 
 @media (max-width: 768px) {
-  .brand-logo { height: 38px; }
+  .brand { display: none; }
+  .site-nav {
+    width: 100%;
+    justify-content: space-around;
+  }
 }
 
 /* ==========================================================================
