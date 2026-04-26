@@ -82,7 +82,7 @@ Your existing PDFs, videos, and images currently live at
 2. Drop the files into this repo's `public/uploads/` folder.
 3. The Markdown files already reference them at `/uploads/<filename>` — no path changes needed.
 
-You also need a profile photo (`me.png`) and favicon (`favicon.png`) in `public/`.
+You also need a profile photo (`me.png`) and headshot (`cropped-me.png`) in `public/uploads/`. The headshot is used as the favicon and the hero photo.
 
 ### Tip: shrink those preview videos
 
@@ -116,7 +116,7 @@ After this, every `git push` to your main branch automatically rebuilds and depl
 
 ## Stack
 
-- **Astro 4** — static site generator. Outputs zero JS by default.
+- **Astro 6** — static site generator. Outputs zero JS by default.
 - **No CSS framework** — plain CSS with custom properties. ~5 KB gzipped.
 - **No client-side JavaScript** — except inline `onmouseover` for video hover previews.
 - **Total build output** for a site this size: well under 100 KB of HTML/CSS (videos and PDFs excluded).
