@@ -4,10 +4,10 @@
 :root {
   --color-bg: #ffffff;
   --color-text: #000000;
-  --color-text-muted: #969696;
-  --color-text-soft: #969696;
+  --color-text-muted: #626262;
+  --color-text-soft: #626262;
   --color-link: #000000;
-  --color-link-hover: #9b9b9b;
+  --color-link-hover: #626262;
   --color-border: #e0e0e0;
 
   /* Button colors — matched to original site */
@@ -85,7 +85,7 @@ p { margin: 0 0 1em; }
 }
 
 .section {
-  padding: 4rem 0 3rem;
+  padding: 1rem 0 3rem;
   scroll-margin-top: 30px;
 }
 
@@ -507,10 +507,9 @@ p { margin: 0 0 1em; }
 .news-sidebar {
   position: fixed;
   top: 5.5rem;
-  /* left edge = centre + half of content width + small gap */
   left: calc(50% + var(--max-width) / 2 + 1.25rem);
-  /* right edge = 1.25rem from viewport edge */
-  right: 1.25rem;
+  width: calc((100vw - var(--max-width)) / 2 - 2.5rem);
+  max-width: 370px;
   max-height: calc(100vh - 7rem);
   display: flex;
   flex-direction: column;
@@ -518,7 +517,6 @@ p { margin: 0 0 1em; }
   border: 1px solid #e8e8e8;
   border-radius: var(--radius);
   padding: 0.9rem 1rem;
-  /* hide when there isn't enough white space */
   display: none;
 }
 
@@ -528,13 +526,11 @@ p { margin: 0 0 1em; }
 }
 
 .news-title {
-  font-size: 0.72rem;
+  font-size: 1.02rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   margin: 0 0 0.6rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e8e8e8;
   flex-shrink: 0;
 }
 
@@ -551,16 +547,14 @@ p { margin: 0 0 1em; }
 
 .news-item {
   display: grid;
-  grid-template-columns: 4.5rem 1fr;
-  gap: 0 0.6rem;
-  padding: 0.55rem 0;
-  border-bottom: 1px solid #f2f2f2;
+  grid-template-columns: 3.8rem 1fr;
+  gap: 0 0.5rem;
+  padding: 0.4rem 0;
 }
-.news-item:last-child { border-bottom: none; }
 
 .news-date {
   font-size: 0.75rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-soft);
   line-height: 1.5;
   padding-top: 0.05rem;
 }
@@ -568,7 +562,8 @@ p { margin: 0 0 1em; }
 .news-text {
   font-size: 0.78rem;
   line-height: 1.5;
-  color: var(--color-text);
+  color: var(--color-text-soft);
+  text-align: justify;
 }
 
 /* ==========================================================================
