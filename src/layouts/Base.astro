@@ -57,5 +57,37 @@ const pageDescription = description ?? site.description;
     <footer class="site-footer">
       <div class="container">{site.footer}</div>
     </footer>
+
+    <!--
+      Mobile WeChat (X5 on Android, WKWebView on iOS) blocks <video autoplay>
+      until the page has received a user gesture or until WeixinJSBridge is
+      ready. Trigger play() on both signals so the autoplay UX matches every
+      other browser. No effect outside WeChat mobile, since play() on an
+      already-playing video is a no-op.
+    -->
+    <script is:inline>
+      (function () {
+        function playAll() {
+          document.querySelectorAll('video').forEach(function (v) {
+            // Play returns a promise; swallow rejections (autoplay denied).
+            var p = v.play();
+            if (p && typeof p.catch === 'function') p.catch(function () {});
+          });
+        }
+
+        // WeChat-specific: WeixinJSBridge unlocks autoplay-like APIs once ready.
+        if (typeof WeixinJSBridge !== 'undefined') {
+          playAll();
+        } else {
+          document.addEventListener('WeixinJSBridgeReady', playAll, false);
+        }
+
+        // Universal fallback: first user gesture anywhere on the page.
+        var opts = { once: true, passive: true };
+        ['touchstart', 'click'].forEach(function (evt) {
+          document.addEventListener(evt, playAll, opts);
+        });
+      })();
+    </script>
   </body>
 </html>
