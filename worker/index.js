@@ -9,7 +9,7 @@
 // fetch media from Cloudflare's own edge.
 
 const JSDELIVR_BASE =
-  'https://cdn.jsdelivr.net/gh/eiORQONrS/MyWebsite@main/chen-yanjun-site/public';
+  'https://cdn.jsdelivr.net/gh/eiORQONrS/MyWebsite@main/public';
 
 // Attributes that may carry a `/uploads/...` path we want to rewrite.
 class AttrRewriter {
