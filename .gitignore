@@ -21,3 +21,7 @@ pnpm-debug.log*
 # editors
 .vscode/
 .idea/
+
+# faststart-mp4.bat artifacts
+public/uploads/_backup_pre_faststart/
+public/uploads/__tmp_*
