@@ -105,6 +105,12 @@ const pageDescription = description ?? site.description;
             overlay.type = 'button';
             overlay.className = 'video-play-overlay';
             overlay.setAttribute('aria-label', 'Play video');
+            // Mirror the video's poster as a CSS background on the overlay so
+            // it visually covers any flash of empty <video> content during the
+            // poster→firstframe handoff (notably WeChat X5, which clears the
+            // poster as soon as play() is called, before any frame is ready).
+            var posterUrl = video.getAttribute('poster');
+            if (posterUrl) overlay.style.backgroundImage = 'url("' + posterUrl + '")';
             overlay.innerHTML = '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(0,0,0,0.55)"/><path d="M26 20 L46 32 L26 44 Z" fill="white"/></svg>';
             media.appendChild(overlay);
 

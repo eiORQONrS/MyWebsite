@@ -42,13 +42,13 @@ set "in=%~1"
 set "name=%~n1"
 set "out=%posters%\%name%.jpg"
 echo Processing: %name%.mp4
-ffmpeg -i "%in%" -frames:v 1 -q:v 3 -vf "scale='min(1280,iw)':-2" -y "%out%" -loglevel error
+ffmpeg -i "%in%" -frames:v 1 -q:v 3 -vf "scale='trunc(iw*sar/2)*2':ih,scale='min(1280,iw)':-2" -y "%out%" -loglevel error
 if exist "%out%" (
     echo     ok
     exit /b 0
 )
 REM fallback: try frame 0 if the 1s seek failed (very short clips)
-ffmpeg -i "%in%" -vframes 1 -q:v 3 -vf "scale='min(1280,iw)':-2" -y "%out%" -loglevel error
+ffmpeg -i "%in%" -vframes 1 -q:v 3 -vf "scale='trunc(iw*sar/2)*2':ih,scale='min(1280,iw)':-2" -y "%out%" -loglevel error
 if exist "%out%" (
     echo     ok ^(frame 0^)
 ) else (
