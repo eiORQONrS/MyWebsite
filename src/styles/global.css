@@ -314,6 +314,7 @@ p { margin: 0 0 1em; }
 .hero-link-cv,
 .hero-link-linkedin,
 .hero-link-scholar,
+.hero-link-github,
 .hero-link-email {
   display: inline-flex;
   align-items: center;
@@ -362,6 +363,18 @@ p { margin: 0 0 1em; }
 .hero-link-scholar:hover {
   background: var(--color-btn-scholar-hover);
 }
+
+/* GitHub — black, icon only */
+.hero-link-github {
+  background: #24292f;
+  color: #ffffff;
+}
+.hero-link-github svg {
+  width: 26px;
+  height: 26px;
+  fill: currentColor;
+}
+.hero-link-github:hover { background: #57606a; color: #ffffff; }
 
 /* Email — red, icon only */
 .hero-link-email {
