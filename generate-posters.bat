@@ -1,8 +1,11 @@
 @echo off
 chcp 65001 >nul
 
-REM Extract one frame at t=1s from every mp4 in public\uploads as a jpg
-REM poster, saved to public\uploads\posters\<basename>.jpg
+REM Extract the very first frame from every mp4 in public\uploads as a jpg
+REM poster, saved to public\uploads\posters\<basename>.jpg. We use the first
+REM frame so the poster matches the exact image the <video> element shows
+REM when playback starts at time 0 — eliminates the visible jump between
+REM poster and video on .cn click-to-play.
 REM
 REM The poster is shown by <video poster="..."> when autoplay is blocked
 REM (e.g., in WeChat's X5 browser, or when the .cn build skips video src).
@@ -39,7 +42,7 @@ set "in=%~1"
 set "name=%~n1"
 set "out=%posters%\%name%.jpg"
 echo Processing: %name%.mp4
-ffmpeg -ss 00:00:00.3 -i "%in%" -vframes 1 -q:v 3 -vf "scale='min(1280,iw)':-2" -y "%out%" -loglevel error
+ffmpeg -i "%in%" -frames:v 1 -q:v 3 -vf "scale='min(1280,iw)':-2" -y "%out%" -loglevel error
 if exist "%out%" (
     echo     ok
     exit /b 0
