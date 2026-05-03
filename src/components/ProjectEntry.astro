@@ -15,6 +15,14 @@ const titleLine1 = colonIdx !== -1 ? props.title.slice(0, colonIdx + 1) : props.
 const titleLine2 = colonIdx !== -1 ? props.title.slice(colonIdx + 2) : null;
 
 const isVideo = props.image.endsWith('.mp4');
+
+// Derive poster URL from video URL: /uploads/foo.mp4 -> /uploads/posters/foo.jpg
+// (run generate-posters.bat to produce these files)
+const posterUrl = isVideo
+  ? props.image
+      .replace('/uploads/', '/uploads/posters/')
+      .replace(/\.mp4$/i, '.jpg')
+  : undefined;
 ---
 
 <article
@@ -24,11 +32,13 @@ const isVideo = props.image.endsWith('.mp4');
   <div class="project-media">
     {isVideo
       ? <video
-          src={props.image}
+          data-src={props.image}
+          poster={posterUrl}
           autoplay
           muted
           loop
           playsinline
+          preload="none"
           webkit-playsinline="true"
           x5-playsinline="true"
           x5-video-player-type="h5-page"

@@ -67,12 +67,29 @@ const pageDescription = description ?? site.description;
     -->
     <script is:inline>
       (function () {
+        // .cn domain skips video activation entirely — Cloudflare-hosted MP4s
+        // are unreliable from mainland China, so we leave the <video> elements
+        // without a src and let the browser display the poster image as a
+        // static fallback. Same build deploys to .com and .cn unchanged.
+        var isCn = location.hostname.endsWith('.cn');
+
         function playAll() {
+          if (isCn) return;
           document.querySelectorAll('video').forEach(function (v) {
+            if (!v.src && v.dataset.src) v.src = v.dataset.src;
             // Play returns a promise; swallow rejections (autoplay denied).
             var p = v.play();
             if (p && typeof p.catch === 'function') p.catch(function () {});
           });
+        }
+
+        // Non-.cn: activate src on initial page load so autoplay still works.
+        if (!isCn) {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', playAll);
+          } else {
+            playAll();
+          }
         }
 
         // WeChat-specific: WeixinJSBridge unlocks autoplay-like APIs once ready.

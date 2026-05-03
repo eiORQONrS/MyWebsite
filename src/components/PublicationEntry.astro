@@ -17,6 +17,14 @@ const authorsHtml = props.authors.replace(
   /\*\*(.+?)\*\*/g,
   '<strong>$1</strong>'
 );
+
+// Derive poster URL from video URL: /uploads/foo.mp4 -> /uploads/posters/foo.jpg
+// (run generate-posters.bat to produce these files)
+const posterUrl = props.previewVideo
+  ? props.previewVideo
+      .replace('/uploads/', '/uploads/posters/')
+      .replace(/\.mp4$/i, '.jpg')
+  : undefined;
 ---
 
 <article class="entry">
@@ -24,11 +32,13 @@ const authorsHtml = props.authors.replace(
     {
       props.previewVideo ? (
         <video
-          src={props.previewVideo}
+          data-src={props.previewVideo}
+          poster={posterUrl}
           autoplay
           muted
           loop
           playsinline
+          preload="none"
           webkit-playsinline="true"
           x5-playsinline="true"
           x5-video-player-type="h5-page"
