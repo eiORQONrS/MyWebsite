@@ -125,11 +125,20 @@ const pageDescription = description ?? site.description;
               overlay.style.pointerEvents = 'none';
 
               function onPlaying() {
-                overlay.classList.add('is-hidden');
-                // Drop the DOM node after the CSS opacity transition finishes
-                // (matches the 0.25s value in global.css).
-                setTimeout(function () { overlay.remove(); }, 300);
                 video.removeEventListener('playing', onPlaying);
+                // Wait two animation frames after 'playing' fires so the
+                // browser has actually painted the first decoded frame to the
+                // screen before we begin fading the overlay. Without this,
+                // WeChat X5 shows a brief flash because 'playing' fires
+                // earlier than the first frame is composited.
+                requestAnimationFrame(function () {
+                  requestAnimationFrame(function () {
+                    overlay.classList.add('is-hidden');
+                    // Drop the DOM node after the CSS opacity transition ends
+                    // (matches the 0.5s value in global.css).
+                    setTimeout(function () { overlay.remove(); }, 550);
+                  });
+                });
               }
               video.addEventListener('playing', onPlaying);
 
