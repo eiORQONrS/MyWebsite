@@ -118,38 +118,54 @@ const pageDescription = description ?? site.description;
               if (!video.src) video.src = video.dataset.src;
               video.preload = 'auto';
 
-              // Disable further clicks but keep the overlay fully opaque over
-              // the video. We only start the fade when the video is actually
-              // rendering frames (the 'playing' event), which avoids the black
-              // flash that happens between play() and the first decoded frame.
+              // Disable further clicks but keep the overlay fully opaque
+              // until the first frame is fully painted on screen.
               overlay.style.pointerEvents = 'none';
 
-              function onPlaying() {
-                video.removeEventListener('playing', onPlaying);
-                // Wait two animation frames after 'playing' fires so the
-                // browser has actually painted the first decoded frame to the
-                // screen before we begin fading the overlay. Without this,
-                // WeChat X5 shows a brief flash because 'playing' fires
-                // earlier than the first frame is composited.
+              function fadeOverlay() {
+                // Two rAFs after the first paint signal — guarantees the
+                // browser has actually composited the frame before the
+                // overlay starts fading. Eliminates the WeChat X5 flash.
                 requestAnimationFrame(function () {
                   requestAnimationFrame(function () {
                     overlay.classList.add('is-hidden');
-                    // Drop the DOM node after the CSS opacity transition ends
-                    // (matches the 0.5s value in global.css).
                     setTimeout(function () { overlay.remove(); }, 550);
                   });
                 });
               }
-              video.addEventListener('playing', onPlaying);
 
-              // Safety net: if 'playing' never fires (broken video, blocked
-              // network), still fade the overlay after a few seconds.
+              function startPlayback() {
+                // Now that the first frame is decoded and held in the video
+                // element, calling play() switches to the video without any
+                // decode/buffer lag between the call and the first paint.
+                var p = video.play();
+                if (p && typeof p.catch === 'function') p.catch(function () {});
+                video.addEventListener('playing', function onPlaying() {
+                  video.removeEventListener('playing', onPlaying);
+                  fadeOverlay();
+                });
+              }
+
+              // Wait for the first frame to be decoded before calling play().
+              // readyState >= 2 (HAVE_CURRENT_DATA) means the current frame
+              // is available; if we already have it, play immediately.
+              if (video.readyState >= 2) {
+                startPlayback();
+              } else {
+                video.addEventListener('loadeddata', function onLoaded() {
+                  video.removeEventListener('loadeddata', onLoaded);
+                  startPlayback();
+                });
+                // Kick the loader. With preload=auto + an explicit load(),
+                // browsers (including X5) start fetching immediately.
+                try { video.load(); } catch (e) {}
+              }
+
+              // Safety net: if events never fire (broken video, blocked
+              // network), still drop the overlay after a few seconds.
               setTimeout(function () {
-                if (overlay.parentNode) onPlaying();
-              }, 4000);
-
-              var p = video.play();
-              if (p && typeof p.catch === 'function') p.catch(function () {});
+                if (overlay.parentNode) fadeOverlay();
+              }, 5000);
             });
           });
         }
