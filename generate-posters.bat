@@ -39,7 +39,7 @@ set "in=%~1"
 set "name=%~n1"
 set "out=%posters%\%name%.jpg"
 echo Processing: %name%.mp4
-ffmpeg -ss 00:00:01 -i "%in%" -vframes 1 -q:v 3 -vf "scale='min(1280,iw)':-2" -y "%out%" -loglevel error
+ffmpeg -ss 00:00:00.3 -i "%in%" -vframes 1 -q:v 3 -vf "scale='min(1280,iw)':-2" -y "%out%" -loglevel error
 if exist "%out%" (
     echo     ok
     exit /b 0

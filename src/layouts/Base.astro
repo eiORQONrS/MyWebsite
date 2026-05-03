@@ -92,6 +92,37 @@ const pageDescription = description ?? site.description;
           }
         }
 
+        // .cn: scope click-to-play to publication cards only (project cards
+        // already navigate on click, leave them alone). User clicks the poster
+        // image, the video src is assigned and playback starts.
+        function setupCnClickToPlay() {
+          if (!isCn) return;
+          document.querySelectorAll('.entry-media').forEach(function (media) {
+            var video = media.querySelector('video[data-src]');
+            if (!video) return;
+
+            var overlay = document.createElement('button');
+            overlay.type = 'button';
+            overlay.className = 'video-play-overlay';
+            overlay.setAttribute('aria-label', 'Play video');
+            overlay.innerHTML = '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(0,0,0,0.55)"/><path d="M26 20 L46 32 L26 44 Z" fill="white"/></svg>';
+            media.appendChild(overlay);
+
+            overlay.addEventListener('click', function () {
+              if (!video.src) video.src = video.dataset.src;
+              video.removeAttribute('preload');
+              var p = video.play();
+              if (p && typeof p.catch === 'function') p.catch(function () {});
+              overlay.remove();
+            });
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', setupCnClickToPlay);
+        } else {
+          setupCnClickToPlay();
+        }
+
         // WeChat-specific: WeixinJSBridge unlocks autoplay-like APIs once ready.
         if (typeof WeixinJSBridge !== 'undefined') {
           playAll();
